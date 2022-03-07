@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include amh_rentals_erpnext *.css
+recursive-include amh_rentals_erpnext *.csv
+recursive-include amh_rentals_erpnext *.html
+recursive-include amh_rentals_erpnext *.ico
+recursive-include amh_rentals_erpnext *.js
+recursive-include amh_rentals_erpnext *.json
+recursive-include amh_rentals_erpnext *.md
+recursive-include amh_rentals_erpnext *.png
+recursive-include amh_rentals_erpnext *.py
+recursive-include amh_rentals_erpnext *.svg
+recursive-include amh_rentals_erpnext *.txt
+recursive-exclude amh_rentals_erpnext *.pyc
