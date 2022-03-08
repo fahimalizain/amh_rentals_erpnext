@@ -12,7 +12,8 @@ app_license = "MIT"
 fixtures = [{
     "doctype": "Custom Field",
     "filters": [["name", "in", [
-            "Branch-warehouse"
+            "Branch-warehouse",
+            "Stock Settings-rented_warehouse"
             ]]]
 }]
 
