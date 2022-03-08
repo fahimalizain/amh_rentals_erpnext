@@ -1,4 +1,4 @@
-from . import __version__ as app_version
+from . import __version__ as app_version  # noqa
 
 app_name = "amh_rentals_erpnext"
 app_title = "AMH Rentals - ERPNext"
@@ -8,6 +8,19 @@ app_icon = "octicon octicon-file-directory"
 app_color = "yellow"
 app_email = "fahimalizain@gmail.com"
 app_license = "MIT"
+
+fixtures = [{
+    "doctype": "Custom Field",
+    "filters": [["name", "in", [
+            "Branch-warehouse"
+            ]]]
+}]
+
+doc_events = {
+    "Branch": {
+        "on_update": "amh_rentals_erpnext.doc_events.branch.on_update"
+    }
+}
 
 # Includes in <head>
 # ------------------
@@ -44,7 +57,7 @@ app_license = "MIT"
 
 # website user home page (by Role)
 # role_home_page = {
-#	"Role": "home_page"
+#    "Role": "home_page"
 # }
 
 # Generators
@@ -96,11 +109,11 @@ app_license = "MIT"
 # Hook on document methods and events
 
 # doc_events = {
-# 	"*": {
+# 	 "*": {
 # 		"on_update": "method",
 # 		"on_cancel": "method",
 # 		"on_trash": "method"
-#	}
+#    }
 # }
 
 # Scheduled Tasks
@@ -152,24 +165,24 @@ app_license = "MIT"
 # --------------------
 
 user_data_fields = [
-	{
-		"doctype": "{doctype_1}",
-		"filter_by": "{filter_by}",
-		"redact_fields": ["{field_1}", "{field_2}"],
-		"partial": 1,
-	},
-	{
-		"doctype": "{doctype_2}",
-		"filter_by": "{filter_by}",
-		"partial": 1,
-	},
-	{
-		"doctype": "{doctype_3}",
-		"strict": False,
-	},
-	{
-		"doctype": "{doctype_4}"
-	}
+    {
+        "doctype": "{doctype_1}",
+        "filter_by": "{filter_by}",
+        "redact_fields": ["{field_1}", "{field_2}"],
+        "partial": 1,
+    },
+    {
+        "doctype": "{doctype_2}",
+        "filter_by": "{filter_by}",
+        "partial": 1,
+    },
+    {
+        "doctype": "{doctype_3}",
+        "strict": False,
+    },
+    {
+        "doctype": "{doctype_4}"
+    }
 ]
 
 # Authentication and authorization
@@ -178,4 +191,3 @@ user_data_fields = [
 # auth_hooks = [
 # 	"amh_rentals_erpnext.auth.validate"
 # ]
-

@@ -1,0 +1,1 @@
+amh_rentals_erpnext.patches.v0.make_branch_warehouses
