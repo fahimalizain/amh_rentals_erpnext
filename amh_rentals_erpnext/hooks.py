@@ -13,7 +13,8 @@ fixtures = [{
     "doctype": "Custom Field",
     "filters": [["name", "in", [
             "Branch-warehouse",
-            "Stock Settings-rented_warehouse"
+            "Stock Settings-rented_warehouse",
+            "Item-daily_rate"
             ]]]
 }]
 

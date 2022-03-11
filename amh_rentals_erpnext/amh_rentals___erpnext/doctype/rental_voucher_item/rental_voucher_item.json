@@ -1,0 +1,78 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-03-11 07:20:56.005750",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item",
+  "daily_rate",
+  "days_taken",
+  "amount",
+  "original_daily_rate",
+  "original_days_taken",
+  "return_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "item.daily_rate",
+   "fieldname": "daily_rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Daily Rate",
+   "reqd": 1
+  },
+  {
+   "fieldname": "days_taken",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Days Taken",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "original_daily_rate",
+   "fieldtype": "Currency",
+   "label": "Original Daily Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "original_days_taken",
+   "fieldtype": "Int",
+   "label": "Original Days Taken",
+   "read_only": 1
+  },
+  {
+   "fieldname": "return_date",
+   "fieldtype": "Date",
+   "label": "Return Date",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-03-11 07:29:39.408789",
+ "modified_by": "Administrator",
+ "module": "AMH Rentals - ERPNext",
+ "name": "Rental Voucher Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
