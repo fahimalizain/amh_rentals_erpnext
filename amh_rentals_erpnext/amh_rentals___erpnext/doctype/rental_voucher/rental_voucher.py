@@ -13,6 +13,12 @@ class RentalVoucher(Document):
         self.validate_items()
         self.calculate()
 
+    def on_submit(self):
+        self.make_stock_ledger_entries()
+
+    def on_cancel(self):
+        self.make_stock_ledger_entries(for_cancel=True)
+
     def validate_items(self):
         for item in self.items:
             item_details = frappe.db.get_value(
@@ -29,11 +35,20 @@ class RentalVoucher(Document):
         for item in self.items:
             item.daily_rate = flt(item.daily_rate, item.precision("daily_rate"))
             item.days_taken = cint(item.days_taken or 1)
+            item.qty = cint(item.qty) or 1
+
             item.return_date = add_days(self.date_time, item.days_taken)
 
-            item.amount = flt(item.daily_rate * item.days_taken, item.precision("amount"))
+            item.amount = flt(
+                item.qty *
+                item.daily_rate *
+                item.days_taken,
+                item.precision("amount"))
             total += item.amount
 
         self.total = flt(total, self.precision("total"))
         self.discount = flt(self.discount, self.precision("discount"))
         self.grand_total = flt(self.total - self.discount, self.precision("grand_total"))
+
+    def make_stock_ledger_entries(self, for_cancel=False):
+        pass
