@@ -14,7 +14,8 @@ fixtures = [{
     "filters": [["name", "in", [
             "Branch-warehouse",
             "Stock Settings-rented_warehouse",
-            "Item-daily_rate"
+            "Item-daily_rate",
+            "Item-max_rent_days"
             ]]]
 }]
 

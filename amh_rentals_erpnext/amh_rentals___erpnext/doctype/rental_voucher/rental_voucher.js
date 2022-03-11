@@ -37,6 +37,11 @@ frappe.ui.form.on("Rental Voucher", {
         item.daily_rate * item.days_taken,
         precision("amount", item)
       );
+
+      item.return_date = frappe.datetime.add_days(
+        doc.date_time,
+        item.days_taken
+      );
       total += item.amount;
     }
     total = flt(total, precision("total"));
@@ -63,6 +68,9 @@ frappe.ui.form.on("Rental Voucher Item", {
     frm.events.calculate(frm);
   },
   items_remove(frm, cdt, cdn) {
+    frm.events.calculate(frm);
+  },
+  days_taken(frm, cdt, cdn) {
     frm.events.calculate(frm);
   },
 });
