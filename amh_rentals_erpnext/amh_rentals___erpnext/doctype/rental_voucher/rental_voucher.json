@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "customer",
+  "branch",
   "column_break_2",
   "date_time",
   "amended_from",
@@ -94,12 +95,19 @@
   {
    "fieldname": "column_break_10",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-11 07:41:34.513209",
+ "modified": "2022-03-11 21:51:18.260793",
  "modified_by": "Administrator",
  "module": "AMH Rentals - ERPNext",
  "name": "Rental Voucher",
