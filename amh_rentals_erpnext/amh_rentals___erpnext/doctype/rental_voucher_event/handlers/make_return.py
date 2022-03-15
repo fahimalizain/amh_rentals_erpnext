@@ -8,13 +8,19 @@ from ..rental_voucher_event import RentalVoucherEvent
 def up(event: RentalVoucherEvent):
     rental_voucher = frappe.get_doc("Rental Voucher", event.rental_voucher)
 
+    # Validate returnability
+    for item in event.items:
+        voucher_item = [x for x in rental_voucher.items if x.item == item.item][0]
+        if item.qty > (voucher_item.qty - voucher_item.qty_returned):
+            frappe.throw("You cannot return more than that was taken")
+
     # Make SLEs
     make_stock_entries(event, rental_voucher)
 
     # Update RentalVoucher
     for item in event.items:
         voucher_item = [x for x in rental_voucher.items if x.item == item.item][0]
-        voucher_item.qty_returned = cint((item.qty_returned or 0) + item.qty)
+        voucher_item.qty_returned = cint((voucher_item.qty_returned or 0) + item.qty)
 
     rental_voucher.flags.ignore_validate_update_after_submit = True
     rental_voucher.save(ignore_permissions=True)
