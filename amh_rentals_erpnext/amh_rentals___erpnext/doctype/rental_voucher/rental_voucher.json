@@ -20,7 +20,11 @@
   "column_break_10",
   "grand_total",
   "section_break_6",
-  "income_account"
+  "income_account",
+  "outstanding_amount",
+  "column_break_16",
+  "total_qty_rented",
+  "total_qty_returned"
  ],
  "fields": [
   {
@@ -32,6 +36,7 @@
    "fieldname": "customer",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Customer",
    "options": "Customer",
    "reqd": 1
@@ -102,12 +107,36 @@
    "label": "Branch",
    "options": "Branch",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_qty_rented",
+   "fieldtype": "Int",
+   "label": "Total Qty Rented",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_qty_returned",
+   "fieldtype": "Int",
+   "label": "Total Qty Returned",
+   "read_only": 1
+  },
+  {
+   "fieldname": "outstanding_amount",
+   "fieldtype": "Currency",
+   "label": "Outstanding Amount",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-03-11 21:51:18.260793",
+ "modified": "2022-03-13 19:45:34.287061",
  "modified_by": "Administrator",
  "module": "AMH Rentals - ERPNext",
  "name": "Rental Voucher",

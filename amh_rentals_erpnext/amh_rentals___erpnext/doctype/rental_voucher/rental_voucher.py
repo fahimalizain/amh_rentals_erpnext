@@ -3,15 +3,20 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import flt, cint, add_days, getdate, get_time
+from frappe.utils import flt, cint, add_days, getdate, get_time, now
 
-from amh_rentals_erpnext import RENTAL_ITEM_GROUPS
+from amh_rentals_erpnext import RENTAL_ITEM_GROUPS, RentalVoucherEventType
 from amh_rentals_erpnext.stock import get_sl_entry
 
 
 class RentalVoucher(Document):
     def validate(self):
         self.validate_items()
+        self.calculate()
+        if not self.date_time:
+            self.date_time = now()
+
+    def before_update_after_submit(self):
         self.calculate()
 
     def on_submit(self):
@@ -22,7 +27,13 @@ class RentalVoucher(Document):
         self.ignore_linked_doctypes = ('GL Entry', 'Stock Ledger Entry', 'Repost Item Valuation')
 
     def validate_items(self):
-        for item in self.items:
+        item_map = dict()
+        for i in range(len(self.items) - 1, -1, -1):
+            item = self.items[i]
+            if item.item in item_map:
+                item_map[item.item].qty += item.qty
+                self.items.remove(item)
+
             item_details = frappe.db.get_value(
                 "Item", item.item, ["name", "item_group", "daily_rate", "max_rent_days"], as_dict=1)
 
@@ -30,14 +41,22 @@ class RentalVoucher(Document):
                 frappe.throw("Non-Rentable Item")
 
             item.max_rent_days = item_details.max_rent_days
-            item.daily_rate = item_details.daily_rate
+            item.daily_rate = item.daily_rate or item_details.daily_rate
+            item_map[item.item] = item
 
     def calculate(self):
         total = 0
+        total_qty_rented = 0
+        total_qty_returned = 0
+
         for item in self.items:
             item.daily_rate = flt(item.daily_rate, item.precision("daily_rate"))
             item.days_taken = cint(item.days_taken or 1)
             item.qty = cint(item.qty) or 1
+            item.qty_returned = cint(item.qty_returned) or 0
+
+            total_qty_rented += item.qty
+            total_qty_returned += item.qty_returned
 
             item.return_date = add_days(self.date_time, item.days_taken)
 
@@ -48,6 +67,8 @@ class RentalVoucher(Document):
                 item.precision("amount"))
             total += item.amount
 
+        self.total_qty_rented = total_qty_rented
+        self.total_qty_returned = total_qty_returned
         self.total = flt(total, self.precision("total"))
         self.discount = flt(self.discount, self.precision("discount"))
         self.grand_total = flt(self.total - self.discount, self.precision("grand_total"))
@@ -97,3 +118,19 @@ class RentalVoucher(Document):
 
         from erpnext.stock.stock_ledger import make_sl_entries
         make_sl_entries(sl_entries)
+
+    @frappe.whitelist()
+    def make_return(self, items):
+        items = [frappe._dict(x) for x in items]
+        frappe.get_doc(dict(
+            doctype="Rental Voucher Event",
+            rental_voucher=self.name,
+            event_type=RentalVoucherEventType.RETURN.value,
+            docstatus=1,
+            items=[dict(
+                item=x.item, qty=x.qty
+            ) for x in items if x.qty > 0]
+        )).insert(ignore_permissions=True)
+
+        self.reload()
+        return self
