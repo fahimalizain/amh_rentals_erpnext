@@ -14,8 +14,7 @@
   "column_break_5",
   "qty_returned",
   "max_rent_days",
-  "original_daily_rate",
-  "original_days_taken"
+  "original_daily_rate"
  ],
  "fields": [
   {
@@ -54,12 +53,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "original_days_taken",
-   "fieldtype": "Int",
-   "label": "Original Days Taken",
-   "read_only": 1
-  },
-  {
    "fetch_from": "item.max_rent_days",
    "fieldname": "max_rent_days",
    "fieldtype": "Int",
@@ -89,7 +82,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-03-17 15:32:51.511578",
+ "modified": "2022-03-21 07:41:00.004034",
  "modified_by": "Administrator",
  "module": "AMH Rentals - ERPNext",
  "name": "Rental Voucher Item",

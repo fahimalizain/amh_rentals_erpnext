@@ -105,6 +105,13 @@ frappe.ui.form.on("Rental Voucher", {
         reqd: 0,
         in_list_view: 1,
       },
+      {
+        label: "Days Taken",
+        fieldname: "days_taken",
+        fieldtype: "Int",
+        reqd: 1,
+        in_list_view: 1,
+      },
     ];
 
     const default_rows = frm.doc.items
@@ -114,11 +121,21 @@ frappe.ui.form.on("Rental Voucher", {
         __islocal: true,
         item: x.item,
         qty: x.qty - x.qty_returned,
+        days_taken: frappe.datetime.get_day_diff(
+          frappe.datetime.now_datetime(), frm.doc.date_time
+        )
       }));
 
     const d = new frappe.ui.Dialog({
       title: "Return Items",
       fields: [
+        {
+          fieldname: "return_date_time",
+          fieldtype: "Datetime",
+          read_only: 1,
+          label: "Current Date Time",
+          default: frappe.datetime.now_datetime(),
+        },
         {
           fieldname: "items",
           fieldtype: "Table",
