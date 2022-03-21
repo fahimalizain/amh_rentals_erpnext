@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import getdate, get_time, cint, now
+from frappe.utils import getdate, get_time, now
 
 from amh_rentals_erpnext.stock import get_sl_entry
 from ..rental_voucher_event import RentalVoucherEvent
@@ -19,9 +19,6 @@ def up(event: RentalVoucherEvent):
 
     # Update RentalVoucher
     for item in event.items:
-        voucher_item = [x for x in rental_voucher.items if x.item == item.item][0]
-        voucher_item.qty_returned = cint((voucher_item.qty_returned or 0) + item.qty_returned)
-
         rental_voucher.append("return_log", dict(
             item=item.item, qty_returned=item.qty_returned, days_taken=item.days_taken,
             original_return_date=event.date_time,
@@ -39,17 +36,15 @@ def down(event: RentalVoucherEvent):
 
     # Update RentalVoucher
     for item in event.items:
-        voucher_item = [x for x in rental_voucher.items if x.item == item.item][0]
-        voucher_item.qty_returned = cint((voucher_item.qty_returned or 0) - item.qty_returned)
-
         # Clear return log
         return_log_item = [
             x for x in rental_voucher.return_log
             if x.original_return_date == event.date_time
             and x.item == item.item
             and x.qty_returned == item.qty_returned
-            and x.days_taken == item.days_taken]
+            and x.days_taken == item.days_taken][0]
 
+        assert return_log_item is not None
         rental_voucher.return_log.remove(return_log_item)
 
     rental_voucher.flags.ignore_validate_update_after_submit = True

@@ -54,26 +54,12 @@ frappe.ui.form.on("Rental Voucher", {
     let total = 0;
     for (const item of doc.items) {
       item.daily_rate = flt(item.daily_rate, precision("daily_rate", item));
-      item.days_taken = flt(
-        item.days_taken || 1,
-        precision("days_taken", item)
-      );
+
       if (item.qty <= 0) {
         item.qty = 1;
       } else {
         item.qty = cint(item.qty || 1);
       }
-
-      item.amount = flt(
-        item.qty * item.daily_rate * item.days_taken,
-        precision("amount", item)
-      );
-
-      item.return_date = frappe.datetime.add_days(
-        doc.date_time,
-        item.days_taken
-      );
-      total += item.amount;
     }
     total = flt(total, precision("total"));
     doc.total = total;

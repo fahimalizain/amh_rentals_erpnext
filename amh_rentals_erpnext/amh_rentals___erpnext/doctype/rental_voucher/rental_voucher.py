@@ -65,19 +65,11 @@ class RentalVoucher(Document):
             total += item.amount
 
         for item in self.items:
-            item.days_taken = cint(item.days_taken or 1)
             item.qty = cint(item.qty) or 1
-            item.qty_returned = cint(item.qty_returned) or 0
+            item.qty_returned = returned_map.setdefault(item.item, 0)
 
             total_qty_rented += item.qty
             total_qty_returned += item.qty_returned
-
-            item.amount = flt(
-                (item.qty - returned_map.setdefault(item.item, 0)) *
-                item.daily_rate *
-                item.days_taken,
-                item.precision("amount"))
-            total += item.amount
 
         self.total_qty_rented = total_qty_rented
         self.total_qty_returned = total_qty_returned
