@@ -15,7 +15,8 @@ fixtures = [{
             "Branch-warehouse",
             "Stock Settings-rented_warehouse",
             "Item-daily_rate",
-            "Item-max_rent_days"
+            "Item-max_rent_days",
+            "Company-advance_payment_payable_account"
             ]]]
 }]
 
